@@ -103,9 +103,9 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
-extern int sys_copy_file(const char *  , const char * );
-extern int sys_get_uncle_count(int);
-extern int sys_get_process_lifetime(int);
+extern int sys_copy_file(void );
+extern int sys_get_uncle_count(void);
+extern int sys_get_process_lifetime(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,

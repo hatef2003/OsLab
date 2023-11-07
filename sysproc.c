@@ -92,15 +92,17 @@ sys_uptime(void)
 int 
 sys_copy_file(const char * src , const char * dest)
 {
-
+  return 0;
 }
 int
 sys_get_uncle_count(int pid)
 {
+  return 0;
 
 }
 int
-get_process_lifetime(int pid)
+sys_get_process_lifetime(int pid)
 {
+  return 0;
 
 }
