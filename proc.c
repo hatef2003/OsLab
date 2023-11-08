@@ -154,7 +154,7 @@ void userinit(void)
 
   release(&ptable.lock);
 }
-struct proc * find_proc(int pid)
+struct proc *find_proc(int pid)
 {
   struct proc *p;
 
@@ -162,15 +162,18 @@ struct proc * find_proc(int pid)
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
     if (p->pid == pid)
+    {
       break;
+    }
   }
+  cprintf("%dma",p->parent->pid);
   release(&ptable.lock);
   return p;
 }
-int count_child(struct proc * father)
+int count_child(struct proc *father)
 {
   struct proc *p;
-  int count=0;
+  int count = 0;
   acquire(&ptable.lock);
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {

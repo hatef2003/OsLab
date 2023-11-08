@@ -84,12 +84,22 @@ int sys_uptime(void)
   return xticks;
 }
 
-int sys_copy_file(const char *src, const char *dest)
+int sys_copy_file()
 {
-  return 0;
+  // if (argint(0, &n) < 0)
+  //   return -1;
+  //  char *src , *dest;
+  
+  // return 0;
 }
-int sys_get_uncle_count(int pid)
+int sys_get_uncle_count(void)
 {
+  int pid;
+  
+  if (argint(0, &pid) < 0 )
+  {
+    return -1 ;
+  }
   struct proc *grandFather = find_proc(pid)->parent->parent;
   return count_child(grandFather)-1;
 }
@@ -104,4 +114,8 @@ void sys_set_date(void)
     cprintf("Kernel: sys_set_date() has a problem.\n");
 
   cmostime(r);
+}
+int sys_get_pid(void)
+{
+  return myproc()->pid;
 }

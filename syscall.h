@@ -24,3 +24,4 @@
 #define SYS_get_uncle_count  23
 #define SYS_get_process_lifetime 24
 #define SYS_set_date 25
+#define SYS_get_pid 26
