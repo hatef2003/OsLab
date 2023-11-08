@@ -4,7 +4,6 @@
 #include "stat.h"
 #include "user.h"
 #include "fcntl.h"
-#include "defs.h"
 
 char *argv[] = { "sh", 0 };
 
@@ -21,9 +20,8 @@ main(void)
   dup(0);  // stderr
 
   for(;;){
-    struct rtcdate r;
-    cmostime(&r);
-    printf(1, "init: starting sh%d\n",r.year);
+ 
+    printf(1, "init: starting sh%d\n");
     pid = fork();
     if(pid < 0){
       printf(1, "init: fork failed\n");
