@@ -60,11 +60,11 @@ main(void)
 {
   5a:	83 ec 10             	sub    $0x10,%esp
   write(fd, s, strlen(s));
-  5d:	68 54 04 00 00       	push   $0x454
+  5d:	68 64 04 00 00       	push   $0x464
   62:	e8 69 01 00 00       	call   1d0 <strlen>
   67:	83 c4 0c             	add    $0xc,%esp
   6a:	50                   	push   %eax
-  6b:	68 54 04 00 00       	push   $0x454
+  6b:	68 64 04 00 00       	push   $0x464
   70:	6a 01                	push   $0x1
   72:	e8 5c 03 00 00       	call   3d3 <write>
   77:	83 c4 10             	add    $0x10,%esp
@@ -98,11 +98,11 @@ main(void)
   b6:	75 49                	jne    101 <forktest+0xb1>
   write(fd, s, strlen(s));
   b8:	83 ec 0c             	sub    $0xc,%esp
-  bb:	68 86 04 00 00       	push   $0x486
+  bb:	68 96 04 00 00       	push   $0x496
   c0:	e8 0b 01 00 00       	call   1d0 <strlen>
   c5:	83 c4 0c             	add    $0xc,%esp
   c8:	50                   	push   %eax
-  c9:	68 86 04 00 00       	push   $0x486
+  c9:	68 96 04 00 00       	push   $0x496
   ce:	6a 01                	push   $0x1
   d0:	e8 fe 02 00 00       	call   3d3 <write>
 }
@@ -113,33 +113,33 @@ main(void)
   da:	e8 d4 02 00 00       	call   3b3 <exit>
   write(fd, s, strlen(s));
   df:	83 ec 0c             	sub    $0xc,%esp
-  e2:	68 5f 04 00 00       	push   $0x45f
+  e2:	68 6f 04 00 00       	push   $0x46f
   e7:	e8 e4 00 00 00       	call   1d0 <strlen>
   ec:	83 c4 0c             	add    $0xc,%esp
   ef:	50                   	push   %eax
-  f0:	68 5f 04 00 00       	push   $0x45f
+  f0:	68 6f 04 00 00       	push   $0x46f
   f5:	6a 01                	push   $0x1
   f7:	e8 d7 02 00 00       	call   3d3 <write>
       exit();
   fc:	e8 b2 02 00 00       	call   3b3 <exit>
   write(fd, s, strlen(s));
  101:	83 ec 0c             	sub    $0xc,%esp
- 104:	68 73 04 00 00       	push   $0x473
+ 104:	68 83 04 00 00       	push   $0x483
  109:	e8 c2 00 00 00       	call   1d0 <strlen>
  10e:	83 c4 0c             	add    $0xc,%esp
  111:	50                   	push   %eax
- 112:	68 73 04 00 00       	push   $0x473
+ 112:	68 83 04 00 00       	push   $0x483
  117:	6a 01                	push   $0x1
  119:	e8 b5 02 00 00       	call   3d3 <write>
     exit();
  11e:	e8 90 02 00 00       	call   3b3 <exit>
   write(fd, s, strlen(s));
  123:	83 ec 0c             	sub    $0xc,%esp
- 126:	68 94 04 00 00       	push   $0x494
+ 126:	68 a4 04 00 00       	push   $0x4a4
  12b:	e8 a0 00 00 00       	call   1d0 <strlen>
  130:	83 c4 0c             	add    $0xc,%esp
  133:	50                   	push   %eax
- 134:	68 94 04 00 00       	push   $0x494
+ 134:	68 a4 04 00 00       	push   $0x4a4
  139:	6a 01                	push   $0x1
  13b:	e8 93 02 00 00       	call   3d3 <write>
     exit();
@@ -677,3 +677,14 @@ SYSCALL(uptime)
  44b:	b8 0e 00 00 00       	mov    $0xe,%eax
  450:	cd 40                	int    $0x40
  452:	c3                   	ret    
+
+00000453 <get_process_lifetime>:
+SYSCALL(get_process_lifetime)
+ 453:	b8 18 00 00 00       	mov    $0x18,%eax
+ 458:	cd 40                	int    $0x40
+ 45a:	c3                   	ret    
+
+0000045b <get_uncle_count>:
+ 45b:	b8 17 00 00 00       	mov    $0x17,%eax
+ 460:	cd 40                	int    $0x40
+ 462:	c3                   	ret    

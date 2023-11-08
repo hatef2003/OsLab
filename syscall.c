@@ -106,7 +106,7 @@ extern int sys_uptime(void);
 extern int sys_copy_file(void );
 extern int sys_get_uncle_count(void);
 extern int sys_get_process_lifetime(void);
-
+extern int sys_set_date(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -132,6 +132,7 @@ static int (*syscalls[])(void) = {
 [SYS_copy_file] sys_copy_file,
 [SYS_get_uncle_count] sys_get_uncle_count,
 [SYS_get_process_lifetime] sys_get_process_lifetime,
+[SYS_set_date]    sys_set_date,
 };
 
 void

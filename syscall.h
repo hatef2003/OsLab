@@ -23,3 +23,4 @@
 #define SYS_copy_file 22
 #define SYS_get_uncle_count  23
 #define SYS_get_process_lifetime 24
+#define SYS_set_date 25

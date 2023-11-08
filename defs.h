@@ -120,6 +120,8 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
+struct proc *   find_proc(int);
+int             count_child(struct proc*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

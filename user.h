@@ -23,7 +23,9 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-
+int get_process_lifetime(int);
+int get_uncle_count(int);
+int copy_file(const char * , const char*);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
