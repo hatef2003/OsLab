@@ -166,7 +166,6 @@ struct proc *find_proc(int pid)
       break;
     }
   }
-  cprintf("%dma",p->parent->pid);
   release(&ptable.lock);
   return p;
 }

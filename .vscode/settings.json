@@ -5,6 +5,9 @@
         "types.h": "c",
         "user.h": "c",
         "defs.h": "c",
-        "x86.h": "c"
+        "x86.h": "c",
+        "param.h": "c",
+        "memlayout.h": "c",
+        "mmu.h": "c"
     }
 }

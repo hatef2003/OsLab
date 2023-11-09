@@ -133,3 +133,7 @@ int sys_get_pid(void)
 {
   return myproc()->pid;
 }
+int sys_get_parent(void)
+{
+  return myproc()->parent->pid;
+}
