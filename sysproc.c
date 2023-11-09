@@ -83,25 +83,39 @@ int sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-int sys_copy_file()
+int find_digital_root(int num)
 {
-  // if (argint(0, &n) < 0)
-  //   return -1;
-  //  char *src , *dest;
-  
-  // return 0;
+  while(num>=10)
+  {
+    int temp  = num;
+    int res= 0 ;
+    while(temp!=0)
+    {
+      int current_dig=temp%10;
+      res+=current_dig;
+      temp/=10;
+    }
+    num=res;
+  }
+  return num;
 }
+int
+sys_find_digital_root(void)
+{
+  int number = myproc()->tf->ebx; //register after eax
+  return find_digital_root(number);
+}
+
 int sys_get_uncle_count(void)
 {
   int pid;
-  
-  if (argint(0, &pid) < 0 )
+
+  if (argint(0, &pid) < 0)
   {
-    return -1 ;
+    return -1;
   }
   struct proc *grandFather = find_proc(pid)->parent->parent;
-  return count_child(grandFather)-1;
+  return count_child(grandFather) - 1;
 }
 int sys_get_process_lifetime(int pid)
 {

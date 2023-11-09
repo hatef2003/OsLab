@@ -108,6 +108,7 @@ extern int sys_get_uncle_count(void);
 extern int sys_get_process_lifetime(void);
 extern int sys_set_date(void);
 extern int sys_get_pid(void);
+extern int sys_find_digital_root(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -135,6 +136,7 @@ static int (*syscalls[])(void) = {
 [SYS_get_process_lifetime] sys_get_process_lifetime,
 [SYS_set_date]    sys_set_date,
 [SYS_get_pid]     sys_get_pid,
+[SYS_find_digital_root] sys_find_digital_root,
 };
 
 void

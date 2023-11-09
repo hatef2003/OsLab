@@ -183,6 +183,7 @@ UPROGS=\
 	_zombie\
 	_proces_lifetime\
 	_get_uncle\
+	_fdr\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -255,6 +256,7 @@ EXTRA=\
 	printf.c umalloc.c\
 	proces_lifetime.c\
 	_get_uncle.c\
+	_fdr.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 

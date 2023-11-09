@@ -25,3 +25,4 @@
 #define SYS_get_process_lifetime 24
 #define SYS_set_date 25
 #define SYS_get_pid 26
+#define SYS_find_digital_root 27
