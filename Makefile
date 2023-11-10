@@ -184,9 +184,10 @@ UPROGS=\
 	_proces_lifetime\
 	_get_uncle\
 	_fdr\
+	_copy\
 
-fs.img: mkfs README $(UPROGS)
-	./mkfs fs.img README $(UPROGS)
+fs.img: mkfs README dest.txt $(UPROGS)
+	./mkfs fs.img README dest.txt $(UPROGS)
 
 -include *.d
 
@@ -199,7 +200,7 @@ clean:
 
 # make a printout
 FILES = $(shell grep -v '^\#' runoff.list)
-PRINT = runoff.list runoff.spec README toc.hdr toc.ftr $(FILES)
+PRINT = runoff.list runoff.spec README dest.txt toc.hdr toc.ftr $(FILES)
 
 xv6.pdf: $(PRINT)
 	./runoff
@@ -257,7 +258,8 @@ EXTRA=\
 	proces_lifetime.c\
 	_get_uncle.c\
 	_fdr.c\
-	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+	_copy.c\
+	README dest.txt dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 
 dist:
