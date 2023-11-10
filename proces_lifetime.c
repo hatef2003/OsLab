@@ -4,10 +4,17 @@
 #include "date.h"
 int main(int argc, char *argv[])
 {
-    for (int i =0 ; i<10000;i++)
+    int child = fork();
+    if (child == 0)
     {
-        printf(1,".");
+        sleep(1000);
+        printf(1, "child life :%d\n", get_process_lifetime(get_pid()));
+        exit();
     }
-    printf(1,"%d",get_process_lifetime(1));
-exit();
+    else
+    {
+        sleep(500);
+        printf(1, "parent life_time : %d",get_process_lifetime(get_pid()));
+        exit();
+    }
 }
