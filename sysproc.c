@@ -83,26 +83,11 @@ int sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-int find_digital_root(int num)
-{
-  while (num >= 10)
-  {
-    int temp = num;
-    int res = 0;
-    while (temp != 0)
-    {
-      int current_dig = temp % 10;
-      res += current_dig;
-      temp /= 10;
-    }
-    num = res;
-  }
-  return num;
-}
+
 int sys_find_digital_root(void)
 {
   int number = myproc()->tf->ebx; // register after eax
-  return find_digital_root(number);
+   return find_digital_root(number);
 }
 
 int sys_get_uncle_count(void)

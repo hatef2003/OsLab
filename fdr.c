@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
         "movl %1, %%ebx;" // ebx = number
         : "=r"(saved_ebx)
         : "r"(number));
-    asm("movl %0, %%ebx" : : "r"(saved_ebx)); // ebx = saved_ebx -> restore
     printf(1,"digtal root is %d\n",find_digital_root());
+    asm("movl %0, %%ebx" : : "r"(saved_ebx)); // ebx = saved_ebx -> restore
+    // 
     exit();
 }

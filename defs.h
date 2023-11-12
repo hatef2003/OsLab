@@ -121,6 +121,7 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 struct proc*   find_proc(int);
+int find_digital_root(int num);
 int             count_child(struct proc*);
 
 // swtch.S

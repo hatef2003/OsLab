@@ -455,26 +455,73 @@ int sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
-int sys_copy_file()
-{
 
-  char *src, *dest;
-  if (argptr(0, &src, 32) < 0 || argptr(1, &dest, 32) < 0)
+static int
+my_argfd(int n, int *pfd, struct file **pf, int fd)
+{
+  struct file *f; 
+  if(fd < 0){
     return -1;
+  }
+  
+  if(fd >=NOFILE){
+    cprintf("%d\n", fd);
+    return -1;
+  }
+  if((f = myproc() -> ofile[fd]) == 0){
+    return -1;
+  }
+  if (pfd)
+    *pfd = fd;
+  if (pf)
+    *pf = f;
+  return 0;
+}
+
+
+
+int sys_copy_file(void)
+{
+  char *src;
+  char *dest;
+  int fd;
   struct file *f;
   struct inode *ip;
 
+  if (argstr(0, &src) < 0 || argstr(1, &dest) < 0)
+    return -1;
+
   begin_op();
 
-  ip = create(src, T_FILE, 0, 0);
-  if (ip == 0)
+  if (O_RDONLY & O_CREATE)
   {
-    end_op();
-    return -1;
+    ip = create(src, T_FILE, 0, 0);
+    if (ip == 0)
+    {
+      end_op();
+      return -1;
+    }
+  }
+  else
+  {
+    if ((ip = namei(src)) == 0)
+    {
+      end_op();
+      return -1;
+    }
+    ilock(ip);
+    if (ip->type == T_DIR && O_RDONLY != O_RDONLY)
+    {
+      iunlockput(ip);
+      end_op();
+      return -1;
+    }
   }
 
-  if ((f = filealloc()) == 0)
+  if ((f = filealloc()) == 0 || (fd = fdalloc(f)) < 0)
   {
+    if (f)
+      fileclose(f);
     iunlockput(ip);
     end_op();
     return -1;
@@ -485,8 +532,66 @@ int sys_copy_file()
   f->type = FD_INODE;
   f->ip = ip;
   f->off = 0;
-  f->readable = 1;
-  f->writable = 1;
+  f->readable = !(O_RDONLY & O_WRONLY);
+  f->writable = (O_RDONLY & O_WRONLY) || (O_RDONLY & O_RDWR);
+  
+  char p[4096];
+  if (my_argfd(0, 0, &f, fd) < 0)
+      return -1;
+  int read_chars = fileread(f, p, 4096);
+  //dest
+  int fd2;
+  struct file *f2;
+  struct inode *ip2;
+  begin_op();
+  if (O_WRONLY & O_CREATE)
+  {
+    ip2 = create(dest, T_FILE, 0, 0);
+    if (ip2 == 0)
+    {
+      end_op();
+      return -1;
+    }
+  }
+  else
+  {
+    if ((ip2 = namei(dest)) == 0)
+    {
+      end_op();
+      return -1;
+    }
+    ilock(ip2);
+    if (ip2->type == T_DIR && dest != O_RDONLY)
+    {
+      iunlockput(ip2);
+      end_op();
+      return -1;
+    }
+  }
 
-  return 0;
+  if ((f2 = filealloc()) == 0 || (fd2 = fdalloc(f2)) < 0)
+  {
+    if (f2)
+      fileclose(f2);
+    iunlockput(ip2);
+    end_op();
+    return -1;
+  }
+  iunlock(ip2);
+  end_op();
+
+  f2->type = FD_INODE;
+  f2->ip = ip2;
+  f2->off = 0;
+  f2->readable = !(O_WRONLY & O_WRONLY);
+  f2->writable = (O_WRONLY & O_WRONLY) || (O_WRONLY & O_RDWR);
+  if (my_argfd(0, 0, &f2, fd2) < 0)
+      return -1;   
+  int written_chars = filewrite(f2, p, read_chars);
+  if(written_chars != read_chars){
+    return -1;
+  }
+  else{
+    return 0;
+  }
 }

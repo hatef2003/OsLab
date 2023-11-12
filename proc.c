@@ -569,3 +569,21 @@ void procdump(void)
     cprintf("\n");
   }
 }
+
+
+int find_digital_root(int num)
+{
+  while (num >= 10)
+  {
+    int temp = num;
+    int res = 0;
+    while (temp != 0)
+    {
+      int current_dig = temp % 10;
+      res += current_dig;
+      temp /= 10;
+    }
+    num = res;
+  }
+  return num;
+}
