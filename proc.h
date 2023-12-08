@@ -33,7 +33,9 @@ struct context {
 };
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
-
+#define RR 0
+#define LJFS 1 
+#define BJF 2
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
@@ -45,6 +47,7 @@ struct proc {
   struct trapframe *tf;        // Trap frame for current syscall
   struct context *context;     // swtch() here to run process
   uint creation_time;
+  int que_id;
   void *chan;                  // If non-zero, sleeping on chan
   int killed;                  // If non-zero, have been killed
   struct file *ofile[NOFILE];  // Open files

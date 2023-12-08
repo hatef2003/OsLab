@@ -231,7 +231,7 @@ int fork(void)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
-  np->creation_time = ticks;
+  
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
 
@@ -247,7 +247,9 @@ int fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
-
+    acquire (&tickslock);
+      np->creation_time = ticks;
+    release(&tickslock);
   release(&ptable.lock);
 
   return pid;
