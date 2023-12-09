@@ -126,3 +126,26 @@ int sys_get_parent(void)
 {
   return myproc()->parent->pid;
 }
+int sys_change_queue(void)
+{
+  int pid , que_id;
+  if (argint(0, &pid) < 0 || argint(1, &que_id))
+    return -1;
+  cprintf("%d\n",pid);
+  struct proc * p = find_proc(pid);
+  p->que_id = que_id;
+  return 0;
+}
+int sys_bjf_validation_process(void)
+{
+  return 0;
+}
+int sys_bjf_validation_system(void)
+{
+  return 0;
+}
+int sys_print_info(void)
+{
+  print_bitches();
+  return 0;
+}

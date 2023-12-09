@@ -182,6 +182,7 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_proces_lifetime\
+	_print_test\
 	_get_uncle\
 	_fdr\
 	_copy\
@@ -256,6 +257,7 @@ EXTRA=\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
 	printf.c umalloc.c\
 	proces_lifetime.c\
+	print_test.c\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\

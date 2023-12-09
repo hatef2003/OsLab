@@ -90,7 +90,12 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
-
+  p->que_id = LCFS;
+  p->priority = 1;
+  p->priority_ratio = 1.0f;
+  p->creation_time_ratio = 1.0f;
+  p->executed_cycle = 1;
+  p->executed_cycle_ratio = 1;
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -154,6 +159,17 @@ void userinit(void)
 
   release(&ptable.lock);
 }
+void print_name(char *name)
+{
+  char buf[17];
+  memset(buf, ' ', 16);
+  buf[16] = 0;
+  for (int i = 0; i < strlen(name); i++)
+  {
+    buf[i] = name[i];
+  }
+  cprintf("%s", buf);
+}
 struct proc *find_proc(int pid)
 {
   struct proc *p;
@@ -168,6 +184,62 @@ struct proc *find_proc(int pid)
   }
   release(&ptable.lock);
   return p;
+}
+void print_state(int state)
+{
+  switch (state)
+  {
+  case UNUSED:
+    cprintf("UNUSED ");
+
+    break;
+  case EMBRYO:
+    cprintf("EMBRYO ");
+    break;
+  case SLEEPING:
+    cprintf("SLEEPING ");
+    break;
+  case RUNNABLE:
+    cprintf("RUNNABLE ");
+    break;
+  case RUNNING:
+    cprintf("RUNNING ");
+    break;
+  case ZOMBIE:
+    cprintf("ZOMBIE ");
+    break;
+  default:
+    cprintf("damn ways to die");
+    break;
+  }
+}
+void print_bitches()
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+  cprintf("process_name    PID    State    Queue    Cycle    Arrival    Priority    R_prty    R_Arvl    R_exec    Rank\n");
+  for (int i = 0; i < 80; i++)
+  {
+    cprintf("-");
+  }
+  cprintf("\n");
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state == UNUSED)
+      continue;
+    print_name(p->name);
+    cprintf("%d  ", p->pid);
+    print_state((*p).state);
+    cprintf("%d   ", p->que_id);
+    cprintf("%d   ", p->executed_cycle);
+    cprintf("%d   ", p->creation_time);
+    cprintf("%d   ", p->priority);
+    cprintf("%d   ", (int)p->priority_ratio);
+    cprintf("%d   ", (int)p->creation_time_ratio);
+    cprintf("%d\n", (int)p->executed_cycle_ratio);
+  }
+  release(&ptable.lock);
 }
 int count_child(struct proc *father)
 {
@@ -231,7 +303,7 @@ int fork(void)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
-  
+
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
 
@@ -247,9 +319,10 @@ int fork(void)
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
-    acquire (&tickslock);
-      np->creation_time = ticks;
-    release(&tickslock);
+  acquire(&tickslock);
+  np->creation_time = ticks;
+  np->preemption_time = ticks;
+  release(&tickslock);
   release(&ptable.lock);
 
   return pid;
@@ -350,7 +423,68 @@ int wait(void)
     sleep(curproc, &ptable.lock); // DOC: wait-sleep
   }
 }
+struct proc *round_robin()
+{
+  struct proc *p;
+  struct proc *res = 0;
 
+  int max_diff = MIN_INT;
+  int time;
+  acquire(&tickslock);
+  time = ticks;
+  release(&tickslock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE || p->que_id != RR)
+      continue;
+    if (time - p->preemption_time > max_diff)
+    {
+      max_diff = time - p->preemption_time;
+      res = p;
+    }
+  }
+  return res;
+}
+struct proc *last_come_first_serve()
+{
+  struct proc *p;
+  struct proc *res = 0;
+
+  int latest_time = MIN_INT;
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE || p->que_id != LCFS)
+      continue;
+    if (p->creation_time > latest_time)
+    {
+      latest_time = p->creation_time;
+      res = p;
+    }
+  }
+  return res;
+}
+float calculate_rank(struct proc *p)
+{
+  return (((float) p->priority) * p->priority_ratio) + (((float) p->creation_time) * p->creation_time_ratio) + ((((float)p->executed_cycle)) * p->executed_cycle_ratio) + (((float)p->sz) * p->process_size_ratio);
+}
+struct proc *best_job_first()
+{
+  struct proc *p;
+  struct proc *res = 0;
+  float min_rank = (float) MAX_INT;
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != RUNNABLE || p->que_id != BJF)
+      continue;
+    float rank = calculate_rank(p);
+    if (rank< min_rank)
+    {
+      min_rank = rank;
+      res = p;
+    }
+  }
+  return res;
+}
 // PAGEBREAK: 42
 //  Per-CPU process scheduler.
 //  Each CPU calls scheduler() after setting itself up.
@@ -571,7 +705,6 @@ void procdump(void)
     cprintf("\n");
   }
 }
-
 
 int find_digital_root(int num)
 {

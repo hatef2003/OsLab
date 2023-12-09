@@ -110,6 +110,10 @@ extern int sys_set_date(void);
 extern int sys_get_pid(void);
 extern int sys_find_digital_root(void);
 extern int sys_get_parent(void);
+extern int sys_change_queue(void);
+extern int sys_bjf_validation_process(void);
+extern int sys_bjf_validation_system(void);
+extern int sys_print_info(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -139,6 +143,10 @@ static int (*syscalls[])(void) = {
 [SYS_get_pid]     sys_get_pid,
 [SYS_find_digital_root] sys_find_digital_root,
 [SYS_get_parent] sys_get_parent,
+[SYS_change_queue] sys_change_queue, 
+[SYS_bjf_validation_process] sys_bjf_validation_process,
+[SYS_bjf_validation_system]sys_bjf_validation_system,
+[SYS_print_info] sys_print_info
 };
 
 void

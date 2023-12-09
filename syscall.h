@@ -27,3 +27,7 @@
 #define SYS_get_pid 26
 #define SYS_find_digital_root 27
 #define SYS_get_parent 28
+#define SYS_change_queue 29
+#define SYS_bjf_validation_process 30
+#define SYS_bjf_validation_system 31
+#define SYS_print_info 32

@@ -33,9 +33,9 @@ struct context {
 };
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
-#define RR 0
-#define LJFS 1 
-#define BJF 2
+#define RR 1
+#define LCFS 2 
+#define BJF 3
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
@@ -47,12 +47,20 @@ struct proc {
   struct trapframe *tf;        // Trap frame for current syscall
   struct context *context;     // swtch() here to run process
   uint creation_time;
+  uint preemption_time;
   int que_id;
   void *chan;                  // If non-zero, sleeping on chan
   int killed;                  // If non-zero, have been killed
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  // best job first attributes
+  uint priority ;
+  float priority_ratio;
+  float creation_time_ratio;
+  float executed_cycle;
+  float executed_cycle_ratio;
+  float process_size_ratio;
 };
 
 // Process memory is laid out contiguously, low addresses first:

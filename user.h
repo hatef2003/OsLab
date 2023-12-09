@@ -20,6 +20,8 @@ int mkdir(const char*);
 int chdir(const char*);
 int dup(int);
 int getpid(void);
+int print_info(void);
+int change_queue(int id , int destination_id);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);

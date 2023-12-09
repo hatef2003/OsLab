@@ -103,6 +103,8 @@ int             pipewrite(struct pipe*, char*, int);
 
 //PAGEBREAK: 16
 // proc.c
+#define MIN_INT  -2147483648
+#define MAX_INT  -2147483648-1
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
@@ -120,9 +122,10 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-struct proc*   find_proc(int);
-int find_digital_root(int num);
+struct proc*    find_proc(int);
+int             find_digital_root(int num);
 int             count_child(struct proc*);
+void            print_bitches(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
