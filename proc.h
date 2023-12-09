@@ -1,3 +1,6 @@
+#define PRIORITY_MIN 2
+#define PRIORITY_DEF 3
+#define PRIORITY_MAX 5
 // Per-CPU state
 struct cpu {
   uchar apicid;                // Local APIC ID

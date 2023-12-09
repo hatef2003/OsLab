@@ -105,6 +105,7 @@ int             pipewrite(struct pipe*, char*, int);
 // proc.c
 #define MIN_INT  -2147483648
 #define MAX_INT  -2147483648-1
+
 int             cpuid(void);
 void            exit(void);
 int             fork(void);
@@ -119,6 +120,7 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
+void            reset_bjf_attributes(float , float , float , float );
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
@@ -158,6 +160,7 @@ char*           strncpy(char*, const char*, int);
 int             argint(int, int*);
 int             argptr(int, char**, int);
 int             argstr(int, char**);
+int             argf(int , float *);
 int             fetchint(uint, int*);
 int             fetchstr(uint, char**);
 void            syscall(void);

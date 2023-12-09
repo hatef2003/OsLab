@@ -44,12 +44,26 @@ fetchstr(uint addr, char **pp)
   }
   return -1;
 }
+int
+fetchfloat(uint addr, float *fp)
+{
+  struct proc *curproc = myproc();
 
+  if(addr >= curproc->sz || addr+4 > curproc->sz)
+    return -1;
+  *fp = *(float*)(addr);
+  return 0;
+}
 // Fetch the nth 32-bit system call argument.
 int
 argint(int n, int *ip)
 {
   return fetchint((myproc()->tf->esp) + 4 + 4*n, ip);
+}
+int
+argf(int n, float *fp)
+{
+  return fetchfloat((myproc()->tf->esp) + 4 + 4*n, fp);
 }
 
 // Fetch the nth word-sized system call argument as a pointer

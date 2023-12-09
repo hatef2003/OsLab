@@ -87,7 +87,7 @@ int sys_uptime(void)
 int sys_find_digital_root(void)
 {
   int number = myproc()->tf->ebx; // register after eax
-   return find_digital_root(number);
+  return find_digital_root(number);
 }
 
 int sys_get_uncle_count(void)
@@ -128,20 +128,38 @@ int sys_get_parent(void)
 }
 int sys_change_queue(void)
 {
-  int pid , que_id;
+  int pid, que_id;
   if (argint(0, &pid) < 0 || argint(1, &que_id))
     return -1;
-  cprintf("%d\n",pid);
-  struct proc * p = find_proc(pid);
+  cprintf("%d\n", pid);
+  struct proc *p = find_proc(pid);
   p->que_id = que_id;
   return 0;
 }
 int sys_bjf_validation_process(void)
 {
+  int pid;
+  float priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
+  if (argint(0, &pid) < 0 || argf(1, &priority_ratio) < 0 || argf(2, &creation_time_ratio) < 0 || argf(3, &exec_cycle_ratio) < 0 || argf(4, &size_ratio) < 0)
+  {
+    return -1;
+  }
+  struct proc *p = find_proc(pid);
+  p->priority_ratio = priority_ratio;
+  p->creation_time_ratio = creation_time_ratio;
+  p->executed_cycle_ratio = exec_cycle_ratio;
+  p->process_size_ratio = size_ratio;
+
   return 0;
 }
 int sys_bjf_validation_system(void)
 {
+  float priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
+  if (argf(0, &priority_ratio) < 0 || argf(1, &creation_time_ratio) < 0 || argf(2, &exec_cycle_ratio) < 0 || argf(3, &size_ratio) < 0)
+  {
+    return -1;
+  }
+  reset_bjf_attributes(priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio);
   return 0;
 }
 int sys_print_info(void)

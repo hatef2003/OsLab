@@ -53,6 +53,23 @@ mycpu(void)
   panic("unknown apicid\n");
 }
 
+void reset_bjf_attributes(float priority_ratio, float creation_time_ratio, float exec_cycle_ratio, float size_ratio)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state != UNUSED)
+    {
+      p->priority_ratio = priority_ratio;
+      p->creation_time_ratio = creation_time_ratio;
+      p->executed_cycle_ratio = exec_cycle_ratio;
+      p->priority_ratio = size_ratio;
+    }
+  }
+  release(&ptable.lock);
+}
+
 // Disable interrupts so that we are not rescheduled
 // while reading proc from the cpu structure
 struct proc *
@@ -91,11 +108,12 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->que_id = LCFS;
-  p->priority = 1;
+  p->priority = PRIORITY_DEF;
   p->priority_ratio = 1.0f;
   p->creation_time_ratio = 1.0f;
-  p->executed_cycle = 1;
-  p->executed_cycle_ratio = 1;
+  p->executed_cycle = 1.0f;
+  p->executed_cycle_ratio = 1.0f;
+  p->process_size_ratio = 1.0f;
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -465,19 +483,19 @@ struct proc *last_come_first_serve()
 }
 float calculate_rank(struct proc *p)
 {
-  return (((float) p->priority) * p->priority_ratio) + (((float) p->creation_time) * p->creation_time_ratio) + ((((float)p->executed_cycle)) * p->executed_cycle_ratio) + (((float)p->sz) * p->process_size_ratio);
+  return (((float)p->priority) * p->priority_ratio) + (((float)p->creation_time) * p->creation_time_ratio) + ((((float)p->executed_cycle)) * p->executed_cycle_ratio) + (((float)p->sz) * p->process_size_ratio);
 }
 struct proc *best_job_first()
 {
   struct proc *p;
   struct proc *res = 0;
-  float min_rank = (float) MAX_INT;
+  float min_rank = (float)MAX_INT;
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
     if (p->state != RUNNABLE || p->que_id != BJF)
       continue;
     float rank = calculate_rank(p);
-    if (rank< min_rank)
+    if (rank < min_rank)
     {
       min_rank = rank;
       res = p;
