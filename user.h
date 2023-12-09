@@ -22,6 +22,8 @@ int dup(int);
 int getpid(void);
 int print_info(void);
 int change_queue(int id , int destination_id);
+int bjf_validation_process(void);
+int bjf_validation_system(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);

@@ -183,6 +183,7 @@ UPROGS=\
 	_zombie\
 	_proces_lifetime\
 	_print_test\
+	_bjf_sys\
 	_get_uncle\
 	_fdr\
 	_copy\
@@ -258,6 +259,7 @@ EXTRA=\
 	printf.c umalloc.c\
 	proces_lifetime.c\
 	print_test.c\
+	bjf_sys.c\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\

@@ -138,6 +138,7 @@ int sys_change_queue(void)
 }
 int sys_bjf_validation_process(void)
 {
+  
   int pid;
   float priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
   if (argint(0, &pid) < 0 || argf(1, &priority_ratio) < 0 || argf(2, &creation_time_ratio) < 0 || argf(3, &exec_cycle_ratio) < 0 || argf(4, &size_ratio) < 0)

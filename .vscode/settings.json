@@ -8,6 +8,7 @@
         "x86.h": "c",
         "param.h": "c",
         "memlayout.h": "c",
-        "mmu.h": "c"
+        "mmu.h": "c",
+        "stat.h": "c"
     }
 }
