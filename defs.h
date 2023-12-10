@@ -106,6 +106,8 @@ int             pipewrite(struct pipe*, char*, int);
 #define MIN_INT  -10000
 #define MAX_INT  10000
 
+
+void            aging(void);
 int             cpuid(void);
 void            exit(void);
 int             fork(void);

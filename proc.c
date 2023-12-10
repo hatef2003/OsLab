@@ -52,7 +52,26 @@ mycpu(void)
   }
   panic("unknown apicid\n");
 }
-
+void aging()
+{
+  struct proc *p;
+  int time;
+  // acquire(&tickslock);
+  time = ticks;
+  // release(&tickslock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->state == RUNNABLE && p->que_id != RR)
+    {
+      if (time - p->preemption_time > AGING_THRS)
+      {
+        release(&ptable.lock);
+        p->que_id = RR;
+        acquire(&ptable.lock);
+      }
+    }
+  }
+}
 void reset_bjf_attributes(float priority_ratio, float creation_time_ratio, float exec_cycle_ratio, float size_ratio)
 {
   struct proc *p;
@@ -249,7 +268,7 @@ void print_bitches()
     cprintf("%d  ", p->pid);
     print_state((*p).state);
     cprintf("%d   ", p->que_id);
-    cprintf("%d   ", (int) p->executed_cycle);
+    cprintf("%d   ", (int)p->executed_cycle);
     cprintf("%d   ", p->creation_time);
     cprintf("%d   ", p->priority);
     cprintf("%d   ", (int)p->priority_ratio);
