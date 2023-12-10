@@ -68,9 +68,9 @@ void aging()
     {
       if (time - p->preemption_time > AGING_THRS)
       {
-        release(&ptable.lock);
+        // release(&ptable.lock);
         p->que_id = RR;
-        acquire(&ptable.lock);
+        // acquire(&ptable.lock);
       }
     }
   }
@@ -130,6 +130,8 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->que_id = LCFS;
+  if(p->pid == 2)
+    p->que_id = RR;
   p->priority = PRIORITY_DEF;
   p->priority_ratio = 1.0f;
   p->creation_time_ratio = 1.0f;
@@ -164,16 +166,16 @@ found:
 }
 int how_many_digit(int num)
 {
-  if(num==0)
+  if (num == 0)
   {
     return 1;
   }
-  int count = 0 ; 
+  int count = 0;
 
-  while (num!=0)
+  while (num != 0)
   {
-    num/=10;
-    count++ ;
+    num /= 10;
+    count++;
   }
   return count;
 }
@@ -214,9 +216,9 @@ void userinit(void)
 }
 void print_name(char *name)
 {
-  char buf[15];
-  memset(buf, ' ', 14);
-  buf[14] = 0;
+  char buf[14];
+  memset(buf, ' ', 12);
+  buf[13] = 0;
   for (int i = 0; i < strlen(name); i++)
   {
     buf[i] = name[i];
@@ -268,7 +270,7 @@ void print_state(int state)
 }
 void print_space(int num)
 {
-  for (int i =0 ; i < num ; i++)
+  for (int i = 0; i < num; i++)
   {
     cprintf(" ");
   }
@@ -289,18 +291,20 @@ void print_bitches()
     if (p->state == UNUSED)
       continue;
     print_name(p->name);
-    cprintf("%d  ", p->pid);
+    cprintf("%d", p->pid);
+    print_space(4-(how_many_digit(p->pid)));
     print_state((*p).state);
     cprintf("%d     ", p->que_id);
-    cprintf("%d     ", (int)p->executed_cycle);
+    cprintf("%d", (int)p->executed_cycle);
+    print_space(5-how_many_digit((int)p->executed_cycle));
     cprintf("%d", p->creation_time);
-    print_space(10-how_many_digit(p->creation_time));
+    print_space(10 - how_many_digit(p->creation_time));
     cprintf("%d       ", p->priority);
     cprintf("%d     ", (int)p->priority_ratio);
     cprintf("%d      ", (int)p->creation_time_ratio);
-    cprintf("%d   ",  (int)p->executed_cycle_ratio);
-     float rank = calculate_rank(p);
-    cprintf("%d",(int )rank);
+    cprintf("%d   ", (int)p->executed_cycle_ratio);
+    float rank = calculate_rank(p);
+    cprintf("%d", (int)rank);
     cprintf("\n");
   }
   release(&ptable.lock);

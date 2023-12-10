@@ -39,7 +39,7 @@ enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 #define RR 1
 #define LCFS 2 
 #define BJF 3
-#define AGING_THRS 8000
+#define AGING_THRS 800
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
