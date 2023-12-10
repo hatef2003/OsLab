@@ -25,7 +25,10 @@ void pinit(void)
 {
   initlock(&ptable.lock, "ptable");
 }
-
+float calculate_rank(struct proc *p)
+{
+  return (((float)p->priority) * p->priority_ratio) + (((float)p->creation_time) * p->creation_time_ratio) + ((((float)p->executed_cycle)) * p->executed_cycle_ratio) + (((float)p->sz) * p->process_size_ratio);
+}
 // Must be called with interrupts disabled
 int cpuid()
 {
@@ -159,7 +162,21 @@ found:
 
   return p;
 }
+int how_many_digit(int num)
+{
+  if(num==0)
+  {
+    return 1;
+  }
+  int count = 0 ; 
 
+  while (num!=0)
+  {
+    num/=10;
+    count++ ;
+  }
+  return count;
+}
 // PAGEBREAK: 32
 //  Set up first user process.
 void userinit(void)
@@ -249,6 +266,13 @@ void print_state(int state)
     break;
   }
 }
+void print_space(int num)
+{
+  for (int i =0 ; i < num ; i++)
+  {
+    cprintf(" ");
+  }
+}
 void print_bitches()
 {
   struct proc *p;
@@ -267,13 +291,17 @@ void print_bitches()
     print_name(p->name);
     cprintf("%d  ", p->pid);
     print_state((*p).state);
-    cprintf("%d   ", p->que_id);
-    cprintf("%d   ", (int)p->executed_cycle);
-    cprintf("%d   ", p->creation_time);
-    cprintf("%d   ", p->priority);
-    cprintf("%d   ", (int)p->priority_ratio);
-    cprintf("%d   ", (int)p->creation_time_ratio);
-    cprintf("%d\n", (int)p->executed_cycle_ratio);
+    cprintf("%d     ", p->que_id);
+    cprintf("%d     ", (int)p->executed_cycle);
+    cprintf("%d", p->creation_time);
+    print_space(10-how_many_digit(p->creation_time));
+    cprintf("%d       ", p->priority);
+    cprintf("%d     ", (int)p->priority_ratio);
+    cprintf("%d      ", (int)p->creation_time_ratio);
+    cprintf("%d   ",  (int)p->executed_cycle_ratio);
+     float rank = calculate_rank(p);
+    cprintf("%d",(int )rank);
+    cprintf("\n");
   }
   release(&ptable.lock);
 }
@@ -495,10 +523,7 @@ struct proc *last_come_first_serve()
   }
   return res;
 }
-float calculate_rank(struct proc *p)
-{
-  return (((float)p->priority) * p->priority_ratio) + (((float)p->creation_time) * p->creation_time_ratio) + ((((float)p->executed_cycle)) * p->executed_cycle_ratio) + (((float)p->sz) * p->process_size_ratio);
-}
+
 struct proc *best_job_first()
 {
   struct proc *p;
