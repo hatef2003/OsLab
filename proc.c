@@ -172,9 +172,8 @@ void userinit(void)
   // writes to be visible, and the lock is also needed
   // because the assignment might not be atomic.
   acquire(&ptable.lock);
-
   p->state = RUNNABLE;
-
+  p->que_id = RR;
   release(&ptable.lock);
 }
 void print_name(char *name)
@@ -335,7 +334,6 @@ int fork(void)
   pid = np->pid;
 
   acquire(&ptable.lock);
-
   np->state = RUNNABLE;
   acquire(&tickslock);
   np->creation_time = ticks;
@@ -445,17 +443,14 @@ struct proc *round_robin()
 {
   struct proc *p;
   struct proc *res = 0;
-
   int max_diff = MIN_INT;
   int now = ticks;
-  
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
-    cprintf("%d\n", p->state);
-    if (p->state != RUNNABLE || p->que_id != RR)
-      continue;
     
-    if (now - p->preemption_time > max_diff)
+    if (p->state != RUNNABLE || p->que_id != RR)
+      continue; 
+    if ((now - p->preemption_time > max_diff))
     {
       max_diff = now - p->preemption_time;
       res = p;
@@ -521,7 +516,6 @@ void scheduler(void)
   {
     // Enable interrupts on this processor.
     sti();
-
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     p = round_robin();
