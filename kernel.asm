@@ -7309,7 +7309,7 @@ void forkret(void)
       if (time - p->preemption_time > AGING_THRS)
 80103a30:	89 ca                	mov    %ecx,%edx
 80103a32:	2b 50 24             	sub    0x24(%eax),%edx
-80103a35:	81 fa 20 03 00 00    	cmp    $0x320,%edx
+80103a35:	81 fa 40 1f 00 00    	cmp    $0x1f40,%edx
 80103a3b:	7e db                	jle    80103a18 <aging+0x18>
         p->que_id = RR;
 80103a3d:	c7 40 28 01 00 00 00 	movl   $0x1,0x28(%eax)
@@ -12946,9 +12946,9 @@ int sys_change_queue(void)
 801066f0:	85 c0                	test   %eax,%eax
 801066f2:	75 2c                	jne    80106720 <sys_change_queue+0x60>
     return -1;
-  cprintf("%d\n", pid);
+  cprintf("%d\n", que_id);
 801066f4:	83 ec 08             	sub    $0x8,%esp
-801066f7:	ff 75 f0             	pushl  -0x10(%ebp)
+801066f7:	ff 75 f4             	pushl  -0xc(%ebp)
 801066fa:	68 14 86 10 80       	push   $0x80108614
 801066ff:	e8 ac 9f ff ff       	call   801006b0 <cprintf>
   struct proc *p = find_proc(pid);

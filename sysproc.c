@@ -131,7 +131,7 @@ int sys_change_queue(void)
   int pid, que_id;
   if (argint(0, &pid) < 0 || argint(1, &que_id))
     return -1;
-  cprintf("%d\n", pid);
+  cprintf("%d\n", que_id);
   struct proc *p = find_proc(pid);
   p->que_id = que_id;
   return 0;

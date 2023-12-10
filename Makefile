@@ -187,6 +187,7 @@ UPROGS=\
 	_bjf_proc\
 	_get_uncle\
 	_foo\
+	_change_que\
 	_fdr\
 	_copy\
 
@@ -264,6 +265,7 @@ EXTRA=\
 	bjf_sys.c\
 	bjf_proc.c\
 	foo.c\
+	change_que.c\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\
