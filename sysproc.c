@@ -140,28 +140,27 @@ int sys_bjf_validation_process(void)
 {
   
   int pid;
-  float priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
-  if (argint(0, &pid) < 0 || argf(1, &priority_ratio) < 0 || argf(2, &creation_time_ratio) < 0 || argf(3, &exec_cycle_ratio) < 0 || argf(4, &size_ratio) < 0)
+  int priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
+  if (argint(0, &pid) < 0 || argint(1, &priority_ratio) < 0 || argint(2, &creation_time_ratio) < 0 || argint(3, &exec_cycle_ratio) < 0 || argint(4, &size_ratio) < 0)
   {
     return -1;
   }
   struct proc *p = find_proc(pid);
-  p->priority_ratio = priority_ratio;
-  p->creation_time_ratio = creation_time_ratio;
-  p->executed_cycle_ratio = exec_cycle_ratio;
-  p->process_size_ratio = size_ratio;
+  p->priority_ratio = (float)priority_ratio;
+  p->creation_time_ratio = (float)creation_time_ratio;
+  p->executed_cycle_ratio = (float)exec_cycle_ratio;
+  p->process_size_ratio = (float)size_ratio;
 
   return 0;
 }
 int sys_bjf_validation_system(void)
 {
-  float priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
-  if (argf(0, &priority_ratio) < 0 || argf(1, &creation_time_ratio) < 0 || argf(2, &exec_cycle_ratio) < 0 || argf(3, &size_ratio) < 0)
+  int priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
+  if (argint(0, &priority_ratio) < 0 || argint(1, &creation_time_ratio) < 0 || argint(2, &exec_cycle_ratio) < 0 || argint(3, &size_ratio) < 0)
   {
     return -1;
   }
-  cprintf("%d\n", priority_ratio);
-  reset_bjf_attributes(priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio);
+  reset_bjf_attributes((float)priority_ratio, (float)creation_time_ratio,(float) exec_cycle_ratio,(float) size_ratio);
   return 0;
 }
 int sys_print_info(void)

@@ -122,7 +122,7 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
-void            reset_bjf_attributes(float , float , float , float );
+void            reset_bjf_attributes(float, float, float, float);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);

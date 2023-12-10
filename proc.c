@@ -86,7 +86,7 @@ void reset_bjf_attributes(float priority_ratio, float creation_time_ratio, float
       p->priority_ratio = priority_ratio;
       p->creation_time_ratio = creation_time_ratio;
       p->executed_cycle_ratio = exec_cycle_ratio;
-      p->priority_ratio = size_ratio;
+      p->process_size_ratio = size_ratio;
     }
   }
   release(&ptable.lock);
@@ -620,6 +620,8 @@ void yield(void)
 {
   acquire(&ptable.lock); // DOC: yieldlock
   myproc()->state = RUNNABLE;
+  myproc()->preemption_time = ticks;
+  myproc()->executed_cycle += 0.1;
   sched();
   release(&ptable.lock);
 }

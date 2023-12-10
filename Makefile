@@ -184,6 +184,7 @@ UPROGS=\
 	_proces_lifetime\
 	_print_test\
 	_bjf_sys\
+	_bjf_proc\
 	_get_uncle\
 	_fdr\
 	_copy\
@@ -260,6 +261,7 @@ EXTRA=\
 	proces_lifetime.c\
 	print_test.c\
 	bjf_sys.c\
+	bjf_proc.c\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\
