@@ -111,7 +111,7 @@ found:
   p->priority = PRIORITY_DEF;
   p->priority_ratio = 1.0f;
   p->creation_time_ratio = 1.0f;
-  p->executed_cycle = 1.0f;
+  p->executed_cycle = 0.1f;
   p->executed_cycle_ratio = 1.0f;
   p->process_size_ratio = 1.0f;
   release(&ptable.lock);
@@ -178,9 +178,9 @@ void userinit(void)
 }
 void print_name(char *name)
 {
-  char buf[17];
-  memset(buf, ' ', 16);
-  buf[16] = 0;
+  char buf[15];
+  memset(buf, ' ', 14);
+  buf[14] = 0;
   for (int i = 0; i < strlen(name); i++)
   {
     buf[i] = name[i];
@@ -207,23 +207,23 @@ void print_state(int state)
   switch (state)
   {
   case UNUSED:
-    cprintf("UNUSED ");
+    cprintf("UNUSED    ");
 
     break;
   case EMBRYO:
-    cprintf("EMBRYO ");
+    cprintf("EMBRYO    ");
     break;
   case SLEEPING:
-    cprintf("SLEEPING ");
+    cprintf("SLEEPING  ");
     break;
   case RUNNABLE:
-    cprintf("RUNNABLE ");
+    cprintf("RUNNABLE  ");
     break;
   case RUNNING:
-    cprintf("RUNNING ");
+    cprintf("RUNNING   ");
     break;
   case ZOMBIE:
-    cprintf("ZOMBIE ");
+    cprintf("ZOMBIE    ");
     break;
   default:
     cprintf("damn ways to die");
@@ -235,7 +235,7 @@ void print_bitches()
   struct proc *p;
 
   acquire(&ptable.lock);
-  cprintf("process_name    PID    State    Queue    Cycle    Arrival    Priority    R_prty    R_Arvl    R_exec    Rank\n");
+  cprintf("process_name PID State   Queue Cycle Arrival Priority R_prty R_Arvl R_exec Rank\n");
   for (int i = 0; i < 80; i++)
   {
     cprintf("-");
@@ -249,7 +249,7 @@ void print_bitches()
     cprintf("%d  ", p->pid);
     print_state((*p).state);
     cprintf("%d   ", p->que_id);
-    cprintf("%d   ", p->executed_cycle);
+    cprintf("%d   ", (int) p->executed_cycle);
     cprintf("%d   ", p->creation_time);
     cprintf("%d   ", p->priority);
     cprintf("%d   ", (int)p->priority_ratio);
@@ -447,9 +447,9 @@ struct proc *round_robin()
   int now = ticks;
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
-    
+
     if (p->state != RUNNABLE || p->que_id != RR)
-      continue; 
+      continue;
     if ((now - p->preemption_time > max_diff))
     {
       max_diff = now - p->preemption_time;
@@ -536,7 +536,8 @@ void scheduler(void)
     c->proc = p;
     switchuvm(p);
     p->state = RUNNING;
-
+    p->preemption_time = ticks;
+    p->executed_cycle += 0.1f;
     swtch(&(c->scheduler), p->context);
     switchkvm();
 

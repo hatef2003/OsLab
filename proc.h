@@ -58,7 +58,7 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   // best job first attributes
-  uint priority ;
+  int priority ;
   float priority_ratio;
   float creation_time_ratio;
   float executed_cycle;
