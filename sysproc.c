@@ -160,6 +160,7 @@ int sys_bjf_validation_system(void)
   {
     return -1;
   }
+  cprintf("%d\n", priority_ratio);
   reset_bjf_attributes(priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio);
   return 0;
 }

@@ -441,7 +441,7 @@ int wait(void)
     sleep(curproc, &ptable.lock); // DOC: wait-sleep
   }
 }
-struct proc *round_robin()
+struct proc* round_robin()
 {
   struct proc *p;
   struct proc *res = 0;
