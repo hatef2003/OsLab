@@ -441,23 +441,23 @@ int wait(void)
     sleep(curproc, &ptable.lock); // DOC: wait-sleep
   }
 }
-struct proc* round_robin()
+struct proc *round_robin()
 {
   struct proc *p;
   struct proc *res = 0;
 
   int max_diff = MIN_INT;
-  int time;
-  acquire(&tickslock);
-  time = ticks;
-  release(&tickslock);
+  int now = ticks;
+  
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
   {
+    cprintf("%d\n", p->state);
     if (p->state != RUNNABLE || p->que_id != RR)
       continue;
-    if (time - p->preemption_time > max_diff)
+    
+    if (now - p->preemption_time > max_diff)
     {
-      max_diff = time - p->preemption_time;
+      max_diff = now - p->preemption_time;
       res = p;
     }
   }
@@ -524,25 +524,29 @@ void scheduler(void)
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    p = round_robin();
+    if (p == 0)
     {
-      if (p->state != RUNNABLE)
-        continue;
-
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
-      c->proc = p;
-      switchuvm(p);
-      p->state = RUNNING;
-
-      swtch(&(c->scheduler), p->context);
-      switchkvm();
-
-      // Process is done running for now.
-      // It should have changed its p->state before coming back.
-      c->proc = 0;
+      p = last_come_first_serve();
     }
+    if (p == 0)
+    {
+      p = best_job_first();
+    }
+    if (p == 0)
+    {
+      release(&ptable.lock);
+      continue;
+    }
+
+    c->proc = p;
+    switchuvm(p);
+    p->state = RUNNING;
+
+    swtch(&(c->scheduler), p->context);
+    switchkvm();
+
+    c->proc = 0;
     release(&ptable.lock);
   }
 }

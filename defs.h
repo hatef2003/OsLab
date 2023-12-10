@@ -103,8 +103,8 @@ int             pipewrite(struct pipe*, char*, int);
 
 //PAGEBREAK: 16
 // proc.c
-#define MIN_INT  -2147483648
-#define MAX_INT  -2147483648-1
+#define MIN_INT  -10000
+#define MAX_INT  10000
 
 int             cpuid(void);
 void            exit(void);
