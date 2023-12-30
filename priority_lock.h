@@ -1,4 +1,4 @@
-#include "spinlock.h"
+// #include "spinlock.h"
 // Long-term locks for processes
 struct priority_lock {
   int locked;       // Is the lock held?

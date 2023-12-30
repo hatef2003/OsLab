@@ -32,6 +32,7 @@ int get_uncle_count(int);
 int get_pid(void);
 int copy_file(const char * , const char*);
 int find_digital_root(void);
+int plock_test(void);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

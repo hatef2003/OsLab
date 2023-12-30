@@ -12,6 +12,7 @@ OBJS = \
 	log.o\
 	main.o\
 	mp.o\
+	priority_lock.o\
 	picirq.o\
 	pipe.o\
 	proc.o\
@@ -188,11 +189,12 @@ UPROGS=\
 	_get_uncle\
 	_foo\
 	_change_que\
+	_lock_test\
 	_fdr\
 	_copy\
 
-fs.img: mkfs README dest.txt $(UPROGS)
-	./mkfs fs.img README dest.txt $(UPROGS)
+fs.img: mkfs README $(UPROGS)
+	./mkfs fs.img README $(UPROGS)
 
 -include *.d
 
@@ -205,7 +207,7 @@ clean:
 
 # make a printout
 FILES = $(shell grep -v '^\#' runoff.list)
-PRINT = runoff.list runoff.spec README dest.txt toc.hdr toc.ftr $(FILES)
+PRINT = runoff.list runoff.spec README toc.hdr toc.ftr $(FILES)
 
 xv6.pdf: $(PRINT)
 	./runoff
@@ -265,11 +267,12 @@ EXTRA=\
 	bjf_sys.c\
 	bjf_proc.c\
 	foo.c\
+	_lock_test.c\
 	change_que.c\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\
-	README dest.txt dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
+	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 
 dist:

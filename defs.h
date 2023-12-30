@@ -133,7 +133,7 @@ struct proc*    find_proc(int);
 int             find_digital_root(int num);
 int             count_child(struct proc*);
 void            print_bitches(void);
-
+void            siktir(void);
 // swtch.S
 void            swtch(struct context**, struct context*);
 

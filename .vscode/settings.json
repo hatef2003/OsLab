@@ -10,6 +10,7 @@
         "memlayout.h": "c",
         "mmu.h": "c",
         "stat.h": "c",
-        "priority_lock.h": "c"
+        "priority_lock.h": "c",
+        "spinlock.h": "c"
     }
 }

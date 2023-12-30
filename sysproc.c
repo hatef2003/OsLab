@@ -138,7 +138,6 @@ int sys_change_queue(void)
 }
 int sys_bjf_validation_process(void)
 {
-  
   int pid;
   int priority_ratio, creation_time_ratio, exec_cycle_ratio, size_ratio;
   if (argint(0, &pid) < 0 || argint(1, &priority_ratio) < 0 || argint(2, &creation_time_ratio) < 0 || argint(3, &exec_cycle_ratio) < 0 || argint(4, &size_ratio) < 0)
@@ -160,7 +159,7 @@ int sys_bjf_validation_system(void)
   {
     return -1;
   }
-  reset_bjf_attributes((float)priority_ratio, (float)creation_time_ratio,(float) exec_cycle_ratio,(float) size_ratio);
+  reset_bjf_attributes((float)priority_ratio, (float)creation_time_ratio, (float)exec_cycle_ratio, (float)size_ratio);
   return 0;
 }
 int sys_print_info(void)
@@ -170,5 +169,10 @@ int sys_print_info(void)
 }
 int sys_print_lopck_que(void)
 {
-  return 0 ; 
+  return 0;
+}
+int sys_plock_test(void)
+{
+  siktir();
+  return 0 ;
 }

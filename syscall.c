@@ -129,6 +129,7 @@ extern int sys_bjf_validation_process(void);
 extern int sys_bjf_validation_system(void);
 extern int sys_print_info(void);
 extern int sys_print_lopck_que(void);
+extern int sys_plock_test(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -162,7 +163,8 @@ static int (*syscalls[])(void) = {
 [SYS_bjf_validation_process] sys_bjf_validation_process,
 [SYS_bjf_validation_system]sys_bjf_validation_system,
 [SYS_print_info] sys_print_info,
-[SYS_print_lopck_que] sys_print_lopck_que
+[SYS_print_lopck_que] sys_print_lopck_que,
+[SYS_plock_test] sys_plock_test
 };
 
 void

@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "priority_lock.h"
 
 struct
 {
@@ -14,7 +15,8 @@ struct
 } ptable;
 
 static struct proc *initproc;
-
+struct priority_lock PL;
+int abbas = 0 ; 
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);
@@ -213,6 +215,7 @@ void userinit(void)
   p->state = RUNNABLE;
   p->que_id = RR;
   release(&ptable.lock);
+  init_priority(&PL , "FUCK");
 }
 void print_name(char *name)
 {
@@ -820,4 +823,15 @@ int find_digital_root(int num)
     num = res;
   }
   return num;
+}
+void siktir(void)
+{
+  acquir_priority(&PL);
+  for (int i = 0 ; i < 10000;i++)
+  {
+    continue;
+  }
+  abbas++;
+  cprintf("%d\n",abbas);
+  release_priority(&PL);
 }

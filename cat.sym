@@ -1,6 +1,6 @@
 00000000 .text
-00000888 .rodata
-000008dc .eh_frame
+00000898 .rodata
+000008ec .eh_frame
 00000bc0 .bss
 00000000 .comment
 00000000 .debug_aranges
@@ -13,14 +13,14 @@
 00000000 cat.c
 00000000 ulib.c
 00000000 printf.c
-00000470 printint
-000008c8 digits.1114
+00000480 printint
+000008d8 digits.1116
 00000000 umalloc.c
 00000bc0 freep
 00000bc4 base
 00000110 strcpy
 0000043b get_parent
-00000520 printf
+00000530 printf
 00000453 bjf_validation_system
 00000340 memmove
 0000041b get_uncle_count
@@ -31,13 +31,15 @@
 000003f3 getpid
 0000044b bjf_validation_process
 00000090 cat
-00000780 malloc
+00000790 malloc
 00000403 sleep
 00000383 pipe
 00000393 write
+00000463 print_lopck_que
 000003cb fstat
 000003a3 kill
 000003e3 chdir
+0000046b plock_test
 000003ab exec
 0000037b wait
 0000038b read
@@ -46,7 +48,7 @@
 0000036b fork
 000003fb sbrk
 0000040b uptime
-00000bac __bss_start
+00000bbc __bss_start
 000001d0 memset
 00000000 main
 00000140 strcmp
@@ -54,7 +56,7 @@
 00000413 get_process_lifetime
 00000be0 buf
 000002b0 stat
-00000bac _edata
+00000bbc _edata
 00000de0 _end
 000003d3 link
 00000373 exit
@@ -66,4 +68,4 @@
 000003db mkdir
 0000039b close
 00000423 get_pid
-000006f0 free
+00000700 free

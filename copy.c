@@ -10,6 +10,6 @@ int main(int argc, char *argv[])
     if(a == 1){
         printf(1, "copying failed\n");
     }
-    
+    //asdsdasd
     exit();
 }

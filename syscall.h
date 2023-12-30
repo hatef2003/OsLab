@@ -32,3 +32,4 @@
 #define SYS_bjf_validation_system 31
 #define SYS_print_info 32
 #define SYS_print_lopck_que 33
+#define SYS_plock_test 34

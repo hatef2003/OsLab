@@ -5,6 +5,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+#include "spinlock.h"
 #include "priority_lock.h"
 void
 init_priority(struct priority_lock *lk, char *name)
@@ -45,7 +46,6 @@ int
 holding_priority(struct priority_lock *lk)
 {
   int r;
-  
   acquire(&lk->lk);
   r = lk->locked && (lk->pid == myproc()->pid);
   release(&lk->lk);
