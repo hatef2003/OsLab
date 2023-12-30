@@ -7,6 +7,7 @@ struct proc;
 struct rtcdate;
 struct spinlock;
 struct sleeplock;
+struct priority_lock;
 struct stat;
 struct superblock;
 
@@ -125,6 +126,8 @@ void            userinit(void);
 void            reset_bjf_attributes(float, float, float, float);
 int             wait(void);
 void            wakeup(void*);
+void            wakeup_pl(void*);
+void            print_lock_que(struct priority_lock *);
 void            yield(void);
 struct proc*    find_proc(int);
 int             find_digital_root(int num);
@@ -148,6 +151,12 @@ void            acquiresleep(struct sleeplock*);
 void            releasesleep(struct sleeplock*);
 int             holdingsleep(struct sleeplock*);
 void            initsleeplock(struct sleeplock*, char*);
+//priority_lock.c
+void            init_priority(struct priority_lock *lk, char *name);
+void            acquir_priority(struct priority_lock *lk);
+void            release_priority(struct priority_lock *lk);
+int             holding_priority(struct priority_lock *lk);
+void            print_que(struct priority_lock * lk);
 
 // string.c
 int             memcmp(const void*, const void*, uint);

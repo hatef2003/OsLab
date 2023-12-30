@@ -9,6 +9,7 @@
         "param.h": "c",
         "memlayout.h": "c",
         "mmu.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "priority_lock.h": "c"
     }
 }

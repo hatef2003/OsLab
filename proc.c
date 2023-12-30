@@ -130,7 +130,7 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->que_id = LCFS;
-  if(p->pid == 2)
+  if (p->pid == 2)
     p->que_id = RR;
   p->priority = PRIORITY_DEF;
   p->priority_ratio = 1.0f;
@@ -292,11 +292,11 @@ void print_bitches()
       continue;
     print_name(p->name);
     cprintf("%d", p->pid);
-    print_space(4-(how_many_digit(p->pid)));
+    print_space(4 - (how_many_digit(p->pid)));
     print_state((*p).state);
     cprintf("%d     ", p->que_id);
     cprintf("%d", (int)p->executed_cycle);
-    print_space(5-how_many_digit((int)p->executed_cycle));
+    print_space(5 - how_many_digit((int)p->executed_cycle));
     cprintf("%d", p->creation_time);
     print_space(10 - how_many_digit(p->creation_time));
     cprintf("%d       ", p->priority);
@@ -711,7 +711,39 @@ void wakeup(void *chan)
   wakeup1(chan);
   release(&ptable.lock);
 }
-
+void wakeup_pl(void *chan)
+{
+  acquire(&ptable.lock);
+  struct proc *p;
+  int max_pid = 0;
+  struct proc *chosen_one = 0;
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->chan == chan && p->pid > max_pid && p->state == SLEEPING)
+    {
+      max_pid = p->pid;
+      chosen_one = p;
+    }
+  }
+  if (max_pid != 0)
+  {
+    chosen_one->state = RUNNABLE;
+  }
+  release(&ptable.lock);
+}
+void print_lock_que(struct priority_lock * a)
+{
+  struct proc *p;
+  acquire(&ptable.lock);
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    if (p->chan ==  a)
+    {
+      cprintf("%d\t",p->pid);
+      cprintf("%s\t",p->name);
+    }
+  }
+}
 // Kill the process with the given pid.
 // Process won't exit until it returns
 // to user space (see trap in trap.c).
