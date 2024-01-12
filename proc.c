@@ -14,13 +14,24 @@ struct
   struct proc proc[NPROC];
 } ptable;
 
+#define MAX_ATTACHED_PROCS 8
+#define SHARED_MEMORY_COUNT 8
+struct shmid_ds
+{
+  int ref_count;
+  int attached_processes[MAX_ATTACHED_PROCS];
+  char* frame;
+  int marked;
+  struct spinlock lock;
+};
+struct spinlock shmlock;
+struct shmid_ds shm_table[SHARED_MEMORY_COUNT];
 static struct proc *initproc;
 struct priority_lock PL;
 int abbas = 0 ; 
 int nextpid = 1;
 extern void forkret(void);
 extern void trapret(void);
-
 static void wakeup1(void *chan);
 
 void pinit(void)
@@ -834,4 +845,72 @@ void siktir(void)
   abbas++;
   cprintf("%d\n",abbas);
   release_priority(&PL);
+}
+void shared_memory_init()
+{
+    int i = 0;
+  acquire(&shmlock);
+  for (i = 0; i < SHARED_MEMORY_COUNT; i++) {
+    acquire(&shm_table[i].lock);
+    shm_table[i].ref_count = 0;
+    shm_table[i].marked = 0;
+    int j = 0;
+    for (j = 0; j < MAX_ATTACHED_PROCS; j++)
+    {
+      shm_table[i].attached_processes[j] = -1;
+    }
+    release(&shm_table[i].lock);
+  }
+  release(&shmlock);
+}
+void open_shared_memory(int id)
+{
+  struct proc* proc = myproc();
+  pde_t *pgdir = proc->pgdir;
+  uint shm = proc->shm;
+  if (shm_table[id].marked == 1)
+    return;
+  if (shm_table[id].ref_count == 0)
+  {
+    char* mem;
+    mem = kalloc();
+
+    memset(mem, 0, PGSIZE);
+    mappages(pgdir, (char*)shm, PGSIZE, V2P(mem), PTE_W|PTE_U);
+    shm_table[id].frame = mem;
+    shm_table[id].ref_count++;
+    } 
+  else
+  {
+    mappages(pgdir, (char*)shm, PGSIZE, V2P(shm_table[id].frame), PTE_W|PTE_U);
+
+    shm_table[id].ref_count++;
+    proc->shm = shm;
+  }
+  int i = 0;
+  for (i = 0; i < MAX_ATTACHED_PROCS; i++)
+  {
+    if (shm_table[id].attached_processes[i] == -1)
+    {
+      shm_table[id].attached_processes[i] = proc->pid;
+    }
+  }  
+}
+void close_shm (int id )
+{
+   struct proc* proc = myproc();
+  if(shm_table[id].ref_count != 0 )
+  {
+    shm_table[id].ref_count--;
+    int i = 0;
+    for (i = 0; i < MAX_ATTACHED_PROCS; i++)
+    {
+      if (shm_table[id].attached_processes[i] == proc->pid)
+        shm_table[id].attached_processes[i] = -1;
+    }
+    if (shm_table[id].ref_count == 0)
+    {
+       shm_table[id].marked =  1; 
+    }
+  }
 }
