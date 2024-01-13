@@ -709,13 +709,15 @@ SYSCALL(print_lopck_que)
  43a:	c3                   	ret    
 
 0000043b <plock_test>:
+SYSCALL(plock_test)
  43b:	b8 22 00 00 00       	mov    $0x22,%eax
  440:	cd 40                	int    $0x40
  442:	c3                   	ret    
- 443:	66 90                	xchg   %ax,%ax
- 445:	66 90                	xchg   %ax,%ax
- 447:	66 90                	xchg   %ax,%ax
- 449:	66 90                	xchg   %ax,%ax
+
+00000443 <open_shm>:
+ 443:	b8 23 00 00 00       	mov    $0x23,%eax
+ 448:	cd 40                	int    $0x40
+ 44a:	c3                   	ret    
  44b:	66 90                	xchg   %ax,%ax
  44d:	66 90                	xchg   %ax,%ax
  44f:	90                   	nop

@@ -11,11 +11,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 ls.c
-00000e44 buf.1127
+00000e44 buf.1129
 00000000 ulib.c
 00000000 printf.c
 000006b0 printint
-00000b1c digits.1116
+00000b1c digits.1118
 00000000 umalloc.c
 00000e54 freep
 00000e58 base
@@ -66,6 +66,7 @@
 000003c0 strlen
 000005e3 open
 00000420 strchr
+000006a3 open_shm
 0000060b mkdir
 000005cb close
 00000653 get_pid

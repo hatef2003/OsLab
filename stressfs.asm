@@ -752,13 +752,15 @@ SYSCALL(print_lopck_que)
  49a:	c3                   	ret    
 
 0000049b <plock_test>:
+SYSCALL(plock_test)
  49b:	b8 22 00 00 00       	mov    $0x22,%eax
  4a0:	cd 40                	int    $0x40
  4a2:	c3                   	ret    
- 4a3:	66 90                	xchg   %ax,%ax
- 4a5:	66 90                	xchg   %ax,%ax
- 4a7:	66 90                	xchg   %ax,%ax
- 4a9:	66 90                	xchg   %ax,%ax
+
+000004a3 <open_shm>:
+ 4a3:	b8 23 00 00 00       	mov    $0x23,%eax
+ 4a8:	cd 40                	int    $0x40
+ 4aa:	c3                   	ret    
  4ab:	66 90                	xchg   %ax,%ax
  4ad:	66 90                	xchg   %ax,%ax
  4af:	90                   	nop

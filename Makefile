@@ -187,6 +187,7 @@ UPROGS=\
 	_bjf_sys\
 	_bjf_proc\
 	_get_uncle\
+	_shared_test\
 	_foo\
 	_change_que\
 	_lock_test\
@@ -270,6 +271,7 @@ EXTRA=\
 	_lock_test.c\
 	change_que.c\
 	_get_uncle.c\
+	shared_test.c\
 	_fdr.c\
 	_copy.c\
 	README dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\

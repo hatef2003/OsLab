@@ -14,7 +14,7 @@
 00000000 ulib.c
 00000000 printf.c
 000003f0 printint
-00000844 digits.1116
+00000844 digits.1118
 00000000 umalloc.c
 00000afc freep
 00000b00 base
@@ -63,6 +63,7 @@
 00000100 strlen
 00000323 open
 00000160 strchr
+000003e3 open_shm
 0000034b mkdir
 0000030b close
 00000393 get_pid

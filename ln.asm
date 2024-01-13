@@ -650,13 +650,15 @@ SYSCALL(print_lopck_que)
  3ba:	c3                   	ret    
 
 000003bb <plock_test>:
+SYSCALL(plock_test)
  3bb:	b8 22 00 00 00       	mov    $0x22,%eax
  3c0:	cd 40                	int    $0x40
  3c2:	c3                   	ret    
- 3c3:	66 90                	xchg   %ax,%ax
- 3c5:	66 90                	xchg   %ax,%ax
- 3c7:	66 90                	xchg   %ax,%ax
- 3c9:	66 90                	xchg   %ax,%ax
+
+000003c3 <open_shm>:
+ 3c3:	b8 23 00 00 00       	mov    $0x23,%eax
+ 3c8:	cd 40                	int    $0x40
+ 3ca:	c3                   	ret    
  3cb:	66 90                	xchg   %ax,%ax
  3cd:	66 90                	xchg   %ax,%ax
  3cf:	90                   	nop

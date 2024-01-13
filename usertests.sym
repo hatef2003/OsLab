@@ -12,11 +12,11 @@
 00000000 .debug_loc
 00000000 .debug_ranges
 00000000 usertests.c
-00005f60 args.1480
+00005f60 args.1482
 00000000 ulib.c
 00000000 printf.c
 00003a90 printint
-00005648 digits.1116
+00005648 digits.1118
 00000000 umalloc.c
 00005fe0 freep
 00005fe4 base
@@ -108,6 +108,7 @@
 00001850 concreate
 00002740 fourteen
 000031f0 validateint
+00003a83 open_shm
 00001070 fourfiles
 000039eb mkdir
 000039ab close

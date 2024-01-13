@@ -176,3 +176,13 @@ int sys_plock_test(void)
   siktir();
   return 0 ;
 }
+int sys_open_shm(void)
+{
+  int id ; 
+  if(argint(0 , &id)<0)
+  {
+    return -1;
+  }
+  open_shared_memory(id);
+  return 0;
+}

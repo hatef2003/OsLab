@@ -33,3 +33,4 @@
 #define SYS_print_info 32
 #define SYS_print_lopck_que 33
 #define SYS_plock_test 34
+#define SYS_open_shm 35

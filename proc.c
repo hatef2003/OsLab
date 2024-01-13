@@ -216,6 +216,7 @@ void userinit(void)
   p->que_id = RR;
   release(&ptable.lock);
   init_priority(&PL , "FUCK");
+  shared_memory_init();
 }
 void print_name(char *name)
 {

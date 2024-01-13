@@ -433,6 +433,7 @@ void open_shared_memory(int id)
   struct proc *proc = myproc();
   pde_t *pgdir = proc->pgdir;
   uint shm = proc->shm;
+  acquire(&shm_table[id].lock);
   if (shm_table[id].marked == 1)
     return;
   if (shm_table[id].ref_count == 0)
@@ -442,6 +443,7 @@ void open_shared_memory(int id)
 
     memset(mem, 0, PGSIZE);
     mappages(pgdir, (char *)shm, PGSIZE, V2P(mem), PTE_W | PTE_U);
+    cprintf("%d\n", shm_table[id].ref_count);
     shm_table[id].frame = mem;
     shm_table[id].ref_count++;
   }
@@ -460,6 +462,7 @@ void open_shared_memory(int id)
       shm_table[id].attached_processes[i] = proc->pid;
     }
   }
+  release(&shm_table[id].lock);
 }
 void close_shm(int id)
 {
