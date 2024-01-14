@@ -131,6 +131,9 @@ extern int sys_print_info(void);
 extern int sys_print_lopck_que(void);
 extern int sys_plock_test(void);
 extern int sys_open_shm(void);
+extern int sys_Aquire(void);
+extern int sys_R(void);
+extern int sys_C(void);
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -166,7 +169,10 @@ static int (*syscalls[])(void) = {
 [SYS_print_info] sys_print_info,
 [SYS_print_lopck_que] sys_print_lopck_que,
 [SYS_plock_test] sys_plock_test,
-[SYS_open_shm] sys_open_shm
+[SYS_open_shm] sys_open_shm,
+[SYS_Aquire] sys_Aquire,
+[SYS_R] sys_R,
+[SYS_C] sys_C
 };
 
 void

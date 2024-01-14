@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-
+#include "spinlock.h"
 int sys_fork(void)
 {
   return fork();
@@ -183,6 +183,29 @@ int sys_open_shm(void)
   {
     return -1;
   }
-  open_shared_memory(id);
+  return (int) open_shared_memory(id);
+  // return 0;
+}
+struct spinlock user_lock;
+int sys_Aquire(void)
+{
+  acquire(&user_lock);
+  return 0;
+}
+int sys_R(void)
+{
+  release(&user_lock);
+  return 0 ;
+}               
+int sys_C(void)
+{
+  int id ; 
+  // int id ; 
+  if(argint(0 , &id)<0)
+  {
+    return -1;
+  }
+  close_shm(id);
+
   return 0;
 }

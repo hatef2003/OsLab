@@ -34,3 +34,6 @@
 #define SYS_print_lopck_que 33
 #define SYS_plock_test 34
 #define SYS_open_shm 35
+#define SYS_Aquire 36
+#define SYS_R 37
+#define SYS_C 38

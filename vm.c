@@ -7,13 +7,13 @@
 #include "proc.h"
 #include "elf.h"
 #include "spinlock.h"
-#define MAX_ATTACHED_PROCS 8
+#define MAX_ATTACHED_PROCS 23
 #define SHARED_MEMORY_COUNT 8
 struct shmid_ds
 {
   int ref_count;
   int attached_processes[MAX_ATTACHED_PROCS];
-  char *frame;
+  char * frame;
   int marked;
   struct spinlock lock;
 };
@@ -428,32 +428,27 @@ void shared_memory_init()
   }
   release(&shmlock);
 }
-void open_shared_memory(int id)
+char *open_shared_memory(int id)
 {
   struct proc *proc = myproc();
   pde_t *pgdir = proc->pgdir;
-  uint shm = proc->shm;
+  if (proc->shm != 0){
+        return 0;
+    }
   acquire(&shm_table[id].lock);
-  if (shm_table[id].marked == 1)
-    return;
+
   if (shm_table[id].ref_count == 0)
   {
     char *mem;
     mem = kalloc();
-
-    memset(mem, 0, PGSIZE);
-    mappages(pgdir, (char *)shm, PGSIZE, V2P(mem), PTE_W | PTE_U);
-    cprintf("%d\n", shm_table[id].ref_count);
-    shm_table[id].frame = mem;
-    shm_table[id].ref_count++;
+    memset(mem, 0, 1024);
+  shm_table[id].frame = mem;
   }
-  else
-  {
-    mappages(pgdir, (char *)shm, PGSIZE, V2P(shm_table[id].frame), PTE_W | PTE_U);
+  char *start_addr = (char *)PGROUNDUP(proc->sz);
 
-    shm_table[id].ref_count++;
-    proc->shm = shm;
-  }
+  mappages(pgdir, start_addr, 1024, V2P(shm_table[id].frame ), PTE_W | PTE_U);
+  shm_table[id].ref_count++;
+  proc->shm = start_addr;
   int i = 0;
   for (i = 0; i < MAX_ATTACHED_PROCS; i++)
   {
@@ -463,10 +458,12 @@ void open_shared_memory(int id)
     }
   }
   release(&shm_table[id].lock);
+  return start_addr;
 }
 void close_shm(int id)
 {
   struct proc *proc = myproc();
+  acquire(&shmlock);
   if (shm_table[id].ref_count != 0)
   {
     shm_table[id].ref_count--;
@@ -478,7 +475,10 @@ void close_shm(int id)
     }
     if (shm_table[id].ref_count == 0)
     {
-      shm_table[id].marked = 1;
+      kfree(shm_table[id].frame);
+      shm_table[id].frame= (void *)0;
+      // shm_table[id].marked = 1;
     }
   }
+  release(&shmlock);
 }

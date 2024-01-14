@@ -34,6 +34,9 @@ int copy_file(const char * , const char*);
 int find_digital_root(void);
 int plock_test(void);
 int open_shm(int);
+int R(void);
+int Aquire(void);
+int C(int id );
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);
