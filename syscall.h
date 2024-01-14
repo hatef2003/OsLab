@@ -32,3 +32,4 @@
 #define SYS_bjf_validation_system 31
 #define SYS_print_info 32
 #define SYS_open_sharedmem 33
+#define SYS_close_sharedmem 34

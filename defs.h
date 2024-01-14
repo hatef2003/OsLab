@@ -132,6 +132,7 @@ int             count_child(struct proc*);
 void            print_bitches(void);
 int             open_sharedmem(int id);
 void            init_shared_pages(void);
+void            close_sharedmem(int id);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
@@ -198,6 +199,11 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
+int             allocsharedmem(pde_t *pgdir, uint oldsz, uint newsz);
+
+
+
+
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

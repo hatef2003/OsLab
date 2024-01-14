@@ -176,3 +176,11 @@ int sys_open_sharedmem(void)
   return open_sharedmem(id);
   
 }
+
+
+void sys_close_sharedmem(void)
+{
+  int id;
+  argint(0, &id);
+  return close_sharedmem(id);
+}

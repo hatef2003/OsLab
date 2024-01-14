@@ -47,3 +47,4 @@ void free(void*);
 int atoi(const char*);
 int get_parent(void);
 int open_sharedmem(int);
+void close_sharedmem(int);

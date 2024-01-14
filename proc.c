@@ -821,13 +821,47 @@ int find_digital_root(int num)
 void init_shared_pages(){
   acquire(&SharedPages.lock);
   for(int i = 0 ; i < NUMBER_OF_SHARED_PAGES ; i++){
-    SharedPages.mems[i].refference_count = 87;
+    SharedPages.mems[i].refference_count = 0;
   }
   release(&SharedPages.lock);
-  cprintf("hereeee\n");
 }
 
 
 int open_sharedmem(int id){
-  return SharedPages.mems[0].refference_count;
+  struct proc *curproc = myproc();
+  int ref;
+  
+  acquire(&SharedPages.lock);
+  if(SharedPages.mems[id].refference_count > 0){
+    release(&SharedPages.lock);
+    SharedPages.mems[id].refference_count ++;
+    SharedPages.mems[id].connected_procs[SharedPages.mems[id].refference_count-1] = curproc->pid;
+    return SharedPages.mems[id].frame;
+  }
+  else{
+    
+    if((ref = allocsharedmem(curproc->pgdir, HEAPLIMIT, HEAPLIMIT + 4096))== 0){
+      cprintf("gol mano azyat nakonid\n");
+      release(&SharedPages.lock);
+      return 0;
+    }
+    SharedPages.mems[id].refference_count ++;
+    SharedPages.mems[id].connected_procs[SharedPages.mems[id].refference_count-1] = curproc->pid;
+    SharedPages.mems[id].frame = ref;  
+  }
+  release(&SharedPages.lock);
+  return ref;
+}
+
+
+
+void close_sharedmem(int id){
+  struct proc* cur_proc = myproc();
+  if(SharedPages.mems[id].refference_count == 1){
+    SharedPages.mems[id].frame = deallocuvm(cur_proc->pgdir, HEAPLIMIT + 4096, HEAPLIMIT);
+    SharedPages.mems[id].refference_count = 0;
+  }
+  else{
+    SharedPages.mems[id].refference_count --;
+  }
 }
