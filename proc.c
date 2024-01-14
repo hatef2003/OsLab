@@ -7,6 +7,32 @@
 #include "proc.h"
 #include "spinlock.h"
 
+
+
+
+#define MAXIMUM_CONNECTED_PROCS 10
+#define NUMBER_OF_SHARED_PAGES 10
+
+
+
+struct sharedMem{
+  int id;
+  int mode;
+  int refference_count;
+  int connected_procs[MAXIMUM_CONNECTED_PROCS];
+  int frame;
+};
+
+struct
+{
+  struct sharedMem mems[NUMBER_OF_SHARED_PAGES];
+  struct spinlock lock;
+}SharedPages;
+
+
+
+
+
 struct
 {
   struct spinlock lock;
@@ -91,6 +117,7 @@ void reset_bjf_attributes(float priority_ratio, float creation_time_ratio, float
   }
   release(&ptable.lock);
 }
+
 
 // Disable interrupts so that we are not rescheduled
 // while reading proc from the cpu structure
@@ -788,4 +815,19 @@ int find_digital_root(int num)
     num = res;
   }
   return num;
+}
+
+
+void init_shared_pages(){
+  acquire(&SharedPages.lock);
+  for(int i = 0 ; i < NUMBER_OF_SHARED_PAGES ; i++){
+    SharedPages.mems[i].refference_count = 85;
+  }
+  release(&SharedPages.lock);
+  cprintf("hereeee\n");
+}
+
+
+int open_sharedmem(int id){
+    return 0;
 }

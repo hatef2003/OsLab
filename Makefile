@@ -190,6 +190,7 @@ UPROGS=\
 	_change_que\
 	_fdr\
 	_copy\
+	_shared_mem
 
 fs.img: mkfs README dest.txt $(UPROGS)
 	./mkfs fs.img README dest.txt $(UPROGS)
@@ -269,6 +270,7 @@ EXTRA=\
 	_get_uncle.c\
 	_fdr.c\
 	_copy.c\
+	_shared_mem.c\
 	README dest.txt dot-bochsrc *.pl toc.* runoff runoff1 runoff.list\
 	.gdbinit.tmpl gdbutil\
 

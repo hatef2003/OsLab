@@ -46,3 +46,4 @@ void* malloc(uint);
 void free(void*);
 int atoi(const char*);
 int get_parent(void);
+int open_sharedmem(int);

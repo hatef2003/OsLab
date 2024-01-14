@@ -168,3 +168,11 @@ int sys_print_info(void)
   print_bitches();
   return 0;
 }
+
+int sys_open_sharedmem(void)
+{
+  int id;
+  argint(0, &id);
+  return open_sharedmem(id);
+  
+}
