@@ -441,28 +441,30 @@ char *open_shared_memory(int id)
   {
     char *mem;
     mem = kalloc();
-    memset(mem, 0, 1024);
+    memset(mem, 0, 16);
   shm_table[id].frame = mem;
   }
   char *start_addr = (char *)PGROUNDUP(proc->sz);
 
-  mappages(pgdir, start_addr, 1024, V2P(shm_table[id].frame ), PTE_W | PTE_U);
+  mappages(pgdir, start_addr, 16, V2P(shm_table[id].frame ), PTE_W | PTE_U);
   shm_table[id].ref_count++;
   proc->shm = start_addr;
-  int i = 0;
-  for (i = 0; i < MAX_ATTACHED_PROCS; i++)
-  {
-    if (shm_table[id].attached_processes[i] == -1)
-    {
-      shm_table[id].attached_processes[i] = proc->pid;
-    }
-  }
+  // int i = 0;
+  // for (i = 0; i < MAX_ATTACHED_PROCS; i++)
+  // {
+  //   if (shm_table[id].attached_processes[i] == -1)
+  //   {
+  //     shm_table[id].attached_processes[i] = proc->pid;
+  //   }
+  // }
   release(&shm_table[id].lock);
   return start_addr;
 }
 void close_shm(int id)
 {
   struct proc *proc = myproc();
+  proc->shm = 0;
+
   acquire(&shmlock);
   if (shm_table[id].ref_count != 0)
   {
@@ -475,6 +477,8 @@ void close_shm(int id)
     }
     if (shm_table[id].ref_count == 0)
     {
+      freevm(proc->pgdir);
+      cprintf("here\n");
       kfree(shm_table[id].frame);
       shm_table[id].frame= (void *)0;
       // shm_table[id].marked = 1;

@@ -1,5 +1,5 @@
 80100000 .text
-801086e0 .rodata
+801086a0 .rodata
 8010a000 .data
 8010c520 .bss
 00000000 .debug_line
@@ -16,7 +16,7 @@
 8010c558 panicked
 80100410 consputc.part.0
 801005a0 printint
-80108750 digits.1628
+80108710 digits.1628
 00000000 exec.c
 00000000 file.c
 00000000 fs.c
@@ -34,9 +34,9 @@
 00000000 kalloc.c
 00000000 kbd.c
 8010c5b4 shift.1459
-80108a80 shiftcode
-80108980 togglecode
-80108960 charcode.1460
+80108a40 shiftcode
+80108940 togglecode
+80108920 charcode.1460
 8010a200 normalmap
 8010a100 shiftmap
 8010a000 ctlmap
@@ -56,12 +56,12 @@
 801038d0 allocproc
 8010c000 first.1782
 8010c5bc initproc
-80108e2c states.1824
+80108dec states.1824
 00000000 sleeplock.c
 00000000 spinlock.c
 00000000 string.c
 00000000 syscall.c
-80108ec0 syscalls
+80108e80 syscalls
 00000000 sysfile.c
 80105810 create
 801059b0 argfd.constprop.0
@@ -422,7 +422,7 @@
 801077af vector179
 80103a60 calculate_rank
 801071fd vector34
-80108620 close_shm
+801085e0 close_shm
 80107269 vector46
 80107593 vector134
 80103f10 print_space
