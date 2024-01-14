@@ -821,7 +821,7 @@ int find_digital_root(int num)
 void init_shared_pages(){
   acquire(&SharedPages.lock);
   for(int i = 0 ; i < NUMBER_OF_SHARED_PAGES ; i++){
-    SharedPages.mems[i].refference_count = 85;
+    SharedPages.mems[i].refference_count = 87;
   }
   release(&SharedPages.lock);
   cprintf("hereeee\n");
@@ -829,5 +829,5 @@ void init_shared_pages(){
 
 
 int open_sharedmem(int id){
-    return 0;
+  return SharedPages.mems[0].refference_count;
 }

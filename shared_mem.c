@@ -7,6 +7,6 @@
 
 
 int main(int argc, char* argv[]){
-    printf(1, "%d\n",open_sharedmem(0));
+    
     return 0;
 }
